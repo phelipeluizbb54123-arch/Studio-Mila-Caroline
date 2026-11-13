@@ -42,11 +42,64 @@ footer{background:#34252c;color:#f9eaf0;padding:28px;text-align:center;font-size
 <script>
 const phone='5598981265696';
 const hour=document.getElementById('hour');for(let h=8;h<=22;h++){for(let m of (h===22?[0]:[0,30])){let t=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');let o=document.createElement('option');o.value=t;o.textContent=t;hour.appendChild(o)}}
-const date=document.getElementById('day');let today=new Date();date.min=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
-document.getElementById('bookingForm').addEventListener('submit',e=>{e.preventDefault();let msg=`Olá, Mila! Gostaria de solicitar um agendamento.%0A%0ANome: ${encodeURIComponent(document.getElementById('client').value)}%0AServiço: ${encodeURIComponent(document.getElementById('service').value)}%0ADia: ${encodeURIComponent(date.value)}%0AHorário: ${encodeURIComponent(hour.value)}%0AObservação: ${encodeURIComponent(document.getElementById('extra').value)}`;window.open(`https://wa.me/${phone}?text=${msg}`,'_blank')});
+const date=document.getElementById('day');let today=new Date();date.min=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10)
+document.getElementById('bookingForm').addEventListener('submit',e=>{e.preventDefault();let msg=`Olá, Mila! Gostaria de solicitar um agendamento.%0A%0ANome: ${encodeURIComponent(document.getElementById('client').value)}%0AServiço: ${encodeURIComponent(document.getElementById('service').value)}%0ADia: ${encodeURIComponent(date.value)}%0AHorário: ${encodeURIComponent(hour.value)}%0AObservação: ${encodeURIComponent(document.getElementById('extra').value)}`;void 0;)});
 function toggleAdmin(){let el=document.getElementById('admin');el.style.display=el.style.display==='block'?'none':'block'}
 function saveName(){let v=document.getElementById('editName').value.trim();if(v){document.querySelector('.brand').childNodes[0].textContent=v+' ';alert('Nome atualizado neste navegador.')}}
 function saveAddress(){let v=document.getElementById('editAddress').value.trim();if(v){document.getElementById('addressText').textContent=v;document.getElementById('mapLink').href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(v);alert('Endereço atualizado nesta página. Para manter publicado, será preciso integrar o painel.')}}
 function saveHero(){let v=document.getElementById('editHero').value.trim();if(v){document.getElementById('heroImage').src=v;alert('Foto atualizada neste navegador.')}}
 document.getElementById('year').textContent=new Date().getFullYear();
+
+const formulario = document.getElementById('bookingForm');
+
+formulario.addEventListener('submit', async function(event) {
+  event.preventDefault();
+  event.stopImmediatePropagation();
+
+  const nome = document.getElementById('client').value.trim();
+  const telefone = prompt('Digite seu WhatsApp com DDD:');
+
+  if (!telefone) return;
+
+  const servico = document.getElementById('service').value;
+  const data = document.getElementById('day').value;
+  const horario = document.getElementById('hour').value;
+
+  const botao = formulario.querySelector('button[type="submit"]');
+  botao.disabled = true;
+  botao.textContent = 'Enviando pedido...';
+
+  try {
+    const resposta = await fetch('/api/agendamentos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nome, telefone, servico, data, horario
+      })
+    });
+
+    if (!resposta.ok) {
+      throw new Error('Não foi possível registrar o pedido.');
+    }
+
+    const mensagem = `Olá, Mila! Solicitei um agendamento.
+Nome: ${nome}
+WhatsApp: ${telefone}
+Serviço: ${servico}
+Data: ${data}
+Horário: ${horario}
+Aguardando confirmação.`;
+
+    window.location.href =
+      'https://wa.me/5598981265696?text=' +
+      encodeURIComponent(mensagem);
+
+  } catch (erro) {
+    alert('Não foi possível registrar o pedido. Tente novamente.');
+  } finally {
+    botao.disabled = false;
+    botao.textContent = 'Enviar pedido pelo WhatsApp';
+  }
+}, true);
+
 </script></body></html>
