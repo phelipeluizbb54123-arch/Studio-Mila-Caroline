@@ -83,8 +83,13 @@ a { color: #b85b83; }
   <section id="panel" class="hidden">
     <h3>Bem-vinda ao painel!</h3>
     <p>Seu acesso foi autenticado.</p>
-    <p>As ferramentas administrativas serão
-       adicionadas na próxima etapa.</p>
+    
+<h3>📅 Gerenciar agendamentos</h3>
+<p>Confira os pedidos das clientes.</p>
+<div id="appointmentsList">
+  Carregando agendamentos...
+</div>
+
     <button id="logout">Sair</button>
   </section>
 
@@ -156,7 +161,77 @@ async function checkAccess() {
 
   show(panel);
   notify("");
+  await loadAppointments();
 }
+
+ 
+async function loadAppointments() {
+  const list = document.querySelector("#appointmentsList");
+  list.textContent = "Carregando agendamentos...";
+
+  const { data, error } = await supabase
+    .from("appointments")
+    .select("*")
+    .order("appointment_date", { ascending: true })
+    .order("appointment_time", { ascending: true });
+
+  if (error) {
+    list.textContent = "Erro ao carregar agendamentos.";
+    return;
+  }
+
+  list.replaceChildren();
+
+  if (!data.length) {
+    list.textContent = "Nenhum agendamento cadastrado ainda.";
+    return;
+  }
+
+  for (const appointment of data) {
+    const card = document.createElement("div");
+    card.style.cssText =
+      "padding:15px;border:1px solid #e9c7d4;" +
+      "border-radius:12px;margin:12px 0;text-align:left";
+
+    const details = document.createElement("p");
+    details.textContent =
+      appointment.client_name + " | " +
+      appointment.service_name + " | " +
+      appointment.appointment_date + " " +
+      appointment.appointment_time.slice(0, 5) +
+      " | " + appointment.status;
+
+    card.append(details);
+
+    if (appointment.status === "pending") {
+      for (const [label, status] of [
+        ["Confirmar", "confirmed"],
+        ["Cancelar", "cancelled"]
+      ]) {
+        const button = document.createElement("button");
+        button.textContent = label;
+        button.onclick = async () => {
+          button.disabled = true;
+
+          const { error } = await supabase
+            .from("appointments")
+            .update({ status })
+            .eq("id", appointment.id)
+            .eq("status", "pending");
+
+          if (error) {
+            alert("Não foi possível atualizar o agendamento.");
+          }
+          await loadAppointments();
+        };
+        card.append(button);
+      }
+    }
+
+    list.append(card);
+  }
+}
+ 
 
 document.querySelector("#loginForm").onsubmit =
 async event => {
