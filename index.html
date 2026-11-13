@@ -7,7 +7,8 @@
 <title>Studio Mila Caroline | Nail Designer</title>
 <meta name="description" content="Conheça os trabalhos, serviços e agende seu horário no Studio Mila Caroline.">
 
-<style>
+
+  <style>
 :root {
   --pink:#bd6f8d;
   --rose:#e9c7d3;
@@ -234,7 +235,52 @@ footer {
   .formgrid {grid-template-columns:1fr}
   .field.full {grid-column:auto}
   section {padding:48px 0}
+
+  section {padding:48px 0}
 }
+
+/* NOVO VISUAL — STUDIO MILA CAROLINE */
+:root {
+  --pink: #d91c70;
+  --rose: #f7c5d9;
+  --pale: #fff5fa;
+  --gold: #c99b35;
+  --ink: #72132f;
+  --muted: #8d6171;
+}
+
+/* FOTO DA MILA À DIREITA */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 30px;
+}
+
+.heroimg {
+  width: 330px;
+  height: 330px;
+  max-width: 100%;
+  border-radius: 50%;
+  border: 8px solid #c99b35;
+  object-fit: cover;
+  justify-self: center;
+  box-shadow: 0 0 0 7px #ffffff80,
+              0 15px 35px #b54b7c55;
+}
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .heroimg {
+    width: 260px;
+    height: 260px;
+  }
+}
+    
 </style>
 </head>
 
@@ -263,9 +309,11 @@ Mila Caroline
 <p>Um momento de cuidado, beleza e autoestima. Conheça alguns trabalhos do Studio Mila Caroline e escolha seu próximo horário.</p>
 <a class="btn" href="#agendar">Quero agendar</a>
 </div>
+
 <img class="heroimg" id="heroImage"
-src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=900"
-alt="Manicure delicada">
+src="Opera%20Instant%C3%A2neo_2026-11-13_153501_www.instagram.com.png"
+alt="Foto original de Mila Caroline">
+
 </div>
 </div>
 </header>
