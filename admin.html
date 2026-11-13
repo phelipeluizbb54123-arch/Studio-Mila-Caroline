@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Área Administrativa | Studio Mila Caroline</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(145deg,#f9edf1,#e9bdcc);
+  color: #48313a;
+  padding: 20px;
+}
+.card {
+  background: white;
+  width: 100%;
+  max-width: 390px;
+  border-radius: 22px;
+  padding: 35px 25px;
+  text-align: center;
+  box-shadow: 0 15px 40px #9e587333;
+}
+.logo { font-size: 42px; }
+h1 { font-family: Georgia,serif; color: #b85b83; }
+.subtitle { color: #856a75; font-size: 14px; }
+input {
+  width: 100%;
+  padding: 15px;
+  margin: 9px 0;
+  border: 1px solid #e9c7d4;
+  border-radius: 10px;
+  font-size: 15px;
+}
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #b85b83;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:disabled { opacity: .6; }
+a { color: #b85b83; }
+#message { font-size: 14px; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">💅</div>
+  <h1>Studio Mila Caroline</h1>
+  <p class="subtitle">Área administrativa</p>
+
+  <section id="login">
+    <form id="loginForm">
+      <input id="email" type="email"
+        placeholder="Seu e-mail" required>
+      <input id="password" type="password"
+        placeholder="Sua senha" required>
+      <button type="submit">Entrar no painel</button>
+    </form>
+    <p><a href="#" id="forgot">Esqueci minha senha</a></p>
+  </section>
+
+  <section id="reset" class="hidden">
+    <h3>Definir nova senha</h3>
+    <form id="resetForm">
+      <input id="newPassword" type="password"
+        minlength="8" placeholder="Nova senha" required>
+      <button type="submit">Salvar senha</button>
+    </form>
+  </section>
+
+  <section id="panel" class="hidden">
+    <h3>Bem-vinda ao painel!</h3>
+    <p>Seu acesso foi autenticado.</p>
+    <p>As ferramentas administrativas serão
+       adicionadas na próxima etapa.</p>
+    <button id="logout">Sair</button>
+  </section>
+
+  <p id="message" role="status"></p>
+</div>
+
+<script type="module">
+import { createClient } from
+"https://esm.sh/@supabase/supabase-js@2";
+
+const message = document.querySelector("#message");
+const login = document.querySelector("#login");
+const reset = document.querySelector("#reset");
+const panel = document.querySelector("#panel");
+
+function show(section) {
+  [login, reset, panel].forEach(el =>
+    el.classList.toggle("hidden", el !== section));
+}
+
+function notify(text) {
+  message.textContent = text;
+}
+
+let supabase;
+
+try {
+  const response = await fetch("/api/config");
+  if (!response.ok) throw new Error("Configuração indisponível");
+  const config = await response.json();
+
+  if (!config.url || !config.publishableKey)
+    throw new Error("Configuração incompleta");
+
+  supabase = createClient(config.url, config.publishableKey);
+
+  const params = new URLSearchParams(location.search);
+  const hash = new URLSearchParams(location.hash.slice(1));
+  const recovery = params.get("type") === "recovery" ||
+                   hash.get("type") === "recovery";
+
+  if (recovery) {
+    show(reset);
+  } else {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) await checkAccess();
+  }
+} catch (error) {
+  notify("Não foi possível conectar ao sistema.");
+}
+
+async function checkAccess() {
+  const { data: userData } = await supabase.auth.getUser();
+  const user = userData.user;
+  if (!user) return show(login);
+
+  const { data, error } = await supabase
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (error || !data) {
+    await supabase.auth.signOut();
+    show(login);
+    notify("Esta conta não possui acesso administrativo.");
+    return;
+  }
+
+  show(panel);
+  notify("");
+}
+
+document.querySelector("#loginForm").onsubmit =
+async event => {
+  event.preventDefault();
+  if (!supabase) return;
+
+  notify("Verificando acesso...");
+  const { error } = await supabase.auth.signInWithPassword({
+    email: document.querySelector("#email").value,
+    password: document.querySelector("#password").value
+  });
+
+  if (error) {
+    notify("Não foi possível entrar. Confira seus dados.");
+    return;
+  }
+  await checkAccess();
+};
+
+document.querySelector("#forgot").onclick =
+async event => {
+  event.preventDefault();
+  if (!supabase) return;
+
+  const email = document.querySelector("#email").value;
+  if (!email) {
+    notify("Digite seu e-mail primeiro.");
+    return;
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(
+    email, {
+      redirectTo: location.origin + "/admin.html?type=recovery"
+    }
+  );
+  notify(error ? "Não foi possível enviar o e-mail." :
+    "Se a conta existir, você receberá um e-mail.");
+};
+
+document.querySelector("#resetForm").onsubmit =
+async event => {
+  event.preventDefault();
+  if (!supabase) return;
+
+  const password =
+    document.querySelector("#newPassword").value;
+
+  const { error } = await supabase.auth.updateUser({
+    password
+  });
+
+  if (error) {
+    notify("Não foi possível alterar a senha.");
+    return;
+  }
+
+  history.replaceState({}, "", "/admin.html");
+  show(login);
+  notify("Senha atualizada. Entre com seus dados.");
+};
+
+document.querySelector("#logout").onclick = async () => {
+  if (supabase) await supabase.auth.signOut();
+  show(login);
+};
+</script>
+</body>
+</html>
