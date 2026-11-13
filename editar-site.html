@@ -63,7 +63,6 @@ if (user) {
     await supabase.auth.signOut();
     window.location.replace("/admin.html");
   }
-}
 
 if (!adminError && admin) document.getElementById("painelEdicao").style.display = "block";
 }
