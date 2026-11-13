@@ -34,6 +34,16 @@
     <h2>Bem-vinda ao painel de edição!</h2>
     <p>Aqui você poderá gerenciar fotos, preços e informações do estúdio.</p>
     <p>Estamos preparando suas ferramentas de edição.</p>
+  
+<h2>📸 Gerenciar fotos dos trabalhos</h2>
+
+<input type="file" id="fotoTrabalho" accept="image/jpeg,image/png,image/webp">
+  
+<button type="button" id="enviarFoto">📤 Enviar foto</button>
+
+<p id="mensagemFoto"></p>
+
+
   </div>
 
 <script type="module">
@@ -47,6 +57,22 @@ const config = await response.json();
 const supabase = createClient(config.url, config.publishableKey);
  
 const { data: { user }, error } = await supabase.auth.getUser();
+ 
+const botaoEnviarFoto = document.getElementById("enviarFoto");
+
+botaoEnviarFoto.addEventListener("click", async () => {
+ const foto = document.getElementById("fotoTrabalho").files[0];
+  if (!foto) return alert("Escolha uma foto primeiro!");
+  document.getElementById("mensagemFoto").textContent = "Enviando foto...";
+  
+const nomeFoto = crypto.randomUUID() + "." + foto.name.split(".").pop().toLowerCase();
+
+const { error: erroEnvio } = await supabase.storage.from("fotos-trabalhos").upload(nomeFoto, foto);
+
+document.getElementById("mensagemFoto").textContent = erroEnvio ? "Erro ao enviar: " + erroEnvio.message : "Foto enviada com sucesso!";
+
+});  
+
 
 if (error || !user) {
   window.location.replace("/admin.html");
