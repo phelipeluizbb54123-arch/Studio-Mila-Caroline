@@ -1,105 +1,647 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Studio Mila Caroline | Nail Designer</title>
 <meta name="description" content="Conheça os trabalhos, serviços e agende seu horário no Studio Mila Caroline.">
+
 <style>
-:root{--pink:#bd6f8d;--rose:#e9c7d3;--pale:#fff8fa;--gold:#c9a34a;--ink:#30242a;--muted:#806d75}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--pale);color:var(--ink);font-family:Arial,sans-serif}a{color:inherit;text-decoration:none}button,input,select,textarea{font:inherit}.wrap{max-width:1120px;margin:auto;padding:0 22px}
-header{background:linear-gradient(110deg,#f7e5eb,#fff9fb 55%,#e9c6d2);padding:28px 0 34px;border-bottom:1px solid #f0dce3}
-nav{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:32px}.brand{font-family:Georgia,serif;font-size:clamp(25px,4vw,42px);font-style:italic}.brand small{display:block;font:600 11px Arial;letter-spacing:4px;color:var(--pink);text-transform:uppercase;margin-top:5px}.navlinks{display:flex;gap:20px;font-size:13px;color:#70545f}.pill,.btn{border:0;border-radius:30px;padding:13px 22px;background:var(--pink);color:white;font-weight:700;cursor:pointer;display:inline-block}.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center}.hero h1{font:italic clamp(38px,6vw,66px) Georgia;margin:0 0 12px}.hero p{line-height:1.7;color:#765e68;max-width:540px}.heroimg{height:320px;border-radius:48% 48% 22px 22px;border:7px solid #f4dfe6;box-shadow:0 10px 30px #8d526022;object-fit:cover;width:100%;background:#f1dce4}
-section{padding:65px 0}.eyebrow{text-transform:uppercase;letter-spacing:3px;color:var(--pink);font-size:11px;font-weight:bold}.heading{text-align:center;margin:0 0 32px}.heading h2{font:italic 36px Georgia;margin:8px 0}.heading p{color:var(--muted);font-size:14px}
-.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.gallery img{width:100%;height:250px;object-fit:cover;border-radius:16px;background:#f0dce3}
-.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.pricecard{background:white;border:1px solid #f0dce3;border-radius:18px;padding:24px;box-shadow:0 8px 25px #8d52600b}.pricecard h3{color:var(--pink);font:italic 24px Georgia;margin:0 0 18px}.price{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #f4e9ed;font-size:14px}.price b{white-space:nowrap}
-.booking{background:linear-gradient(135deg,#f6e3ea,#fff9fb)}.bookbox{max-width:760px;margin:auto;background:white;border-radius:22px;padding:28px;box-shadow:0 12px 35px #8d526018}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:bold;color:#765e68}.field input,.field select,.field textarea{width:100%;padding:13px;border:1px solid #ead6de;border-radius:10px;background:#fffdfd;color:var(--ink)}.bookbox .btn{width:100%;margin-top:18px}.note{font-size:12px;color:var(--muted);line-height:1.5}
-.contact{text-align:center}.contact p{color:var(--muted);line-height:1.7}.map{background:white;border:1px dashed #d8b6c3;padding:28px;border-radius:16px;max-width:700px;margin:20px auto}
-footer{background:#34252c;color:#f9eaf0;padding:28px;text-align:center;font-size:13px}.adminlink{opacity:.7;font-size:11px;margin-left:12px}
-#admin{display:none;background:#fff;border:1px solid #e8cbd6;border-radius:16px;padding:22px;margin:20px auto;max-width:900px}#admin input{margin:5px;padding:9px;border:1px solid #ddd;border-radius:8px}#admin button{margin:5px}.adminrow{padding:12px 0;border-bottom:1px solid #eee}
-@media(max-width:760px){.hero{grid-template-columns:1fr}.heroimg{height:260px}.navlinks{display:none}.gallery{grid-template-columns:repeat(2,1fr)}.gallery img{height:180px}.prices{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}section{padding:48px 0}}
+:root {
+  --pink:#bd6f8d;
+  --rose:#e9c7d3;
+  --pale:#fff8fa;
+  --gold:#c9a34a;
+  --ink:#30242a;
+  --muted:#806d75;
+}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth}
+body {
+  margin:0;
+  background:var(--pale);
+  color:var(--ink);
+  font-family:Arial,sans-serif;
+}
+a {color:inherit;text-decoration:none}
+button,input,select,textarea {font:inherit}
+.wrap {max-width:1120px;margin:auto;padding:0 22px}
+header {
+  background:linear-gradient(110deg,#f7e5eb,#fff9fb 55%,#e9c6d2);
+  padding:28px 0 34px;
+  border-bottom:1px solid #f0dce3;
+}
+nav {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  margin-bottom:32px;
+}
+.brand {
+  font-family:Georgia,serif;
+  font-size:clamp(25px,4vw,42px);
+  font-style:italic;
+}
+.brand small {
+  display:block;
+  font:600 11px Arial;
+  letter-spacing:4px;
+  color:var(--pink);
+  text-transform:uppercase;
+  margin-top:5px;
+}
+.navlinks {
+  display:flex;
+  gap:20px;
+  font-size:13px;
+  color:#70545f;
+}
+.pill,.btn {
+  border:0;
+  border-radius:30px;
+  padding:13px 22px;
+  background:var(--pink);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  display:inline-block;
+}
+.hero {
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:30px;
+  align-items:center;
+}
+.hero h1 {
+  font:italic clamp(38px,6vw,66px) Georgia;
+  margin:0 0 12px;
+}
+.hero p {
+  line-height:1.7;
+  color:#765e68;
+  max-width:540px;
+}
+.heroimg {
+  height:320px;
+  border-radius:48% 48% 22px 22px;
+  border:7px solid #f4dfe6;
+  box-shadow:0 10px 30px #8d526022;
+  object-fit:cover;
+  width:100%;
+  background:#f1dce4;
+}
+section {padding:65px 0}
+.eyebrow {
+  text-transform:uppercase;
+  letter-spacing:3px;
+  color:var(--pink);
+  font-size:11px;
+  font-weight:bold;
+}
+.heading {text-align:center;margin:0 0 32px}
+.heading h2 {font:italic 36px Georgia;margin:8px 0}
+.heading p {color:var(--muted);font-size:14px}
+.gallery {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.gallery img {
+  width:100%;
+  height:250px;
+  object-fit:cover;
+  border-radius:16px;
+  background:#f0dce3;
+}
+.prices {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.pricecard {
+  background:white;
+  border:1px solid #f0dce3;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 8px 25px #8d52600b;
+}
+.pricecard h3 {
+  color:var(--pink);
+  font:italic 24px Georgia;
+  margin:0 0 18px;
+}
+.price {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid #f4e9ed;
+  font-size:14px;
+}
+.price b {white-space:nowrap}
+.booking {
+  background:linear-gradient(135deg,#f6e3ea,#fff9fb);
+}
+.bookbox {
+  max-width:760px;
+  margin:auto;
+  background:white;
+  border-radius:22px;
+  padding:28px;
+  box-shadow:0 12px 35px #8d526018;
+}
+.formgrid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+.field {
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+.field.full {grid-column:1/-1}
+.field label {
+  font-size:12px;
+  font-weight:bold;
+  color:#765e68;
+}
+.field input,.field select,.field textarea {
+  width:100%;
+  padding:13px;
+  border:1px solid #ead6de;
+  border-radius:10px;
+  background:#fffdfd;
+  color:var(--ink);
+}
+.bookbox .btn {width:100%;margin-top:18px}
+.note {
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.5;
+}
+.contact {text-align:center}
+.contact p {color:var(--muted);line-height:1.7}
+.map {
+  background:white;
+  border:1px dashed #d8b6c3;
+  padding:28px;
+  border-radius:16px;
+  max-width:700px;
+  margin:20px auto;
+}
+footer {
+  background:#34252c;
+  color:#f9eaf0;
+  padding:28px;
+  text-align:center;
+  font-size:13px;
+}
+.adminlink {
+  opacity:.7;
+  font-size:11px;
+  margin-left:12px;
+}
+#admin {
+  display:none;
+  background:#fff;
+  border:1px solid #e8cbd6;
+  border-radius:16px;
+  padding:22px;
+  margin:20px auto;
+  max-width:900px;
+}
+#admin input {
+  margin:5px;
+  padding:9px;
+  border:1px solid #ddd;
+  border-radius:8px;
+}
+#admin button {margin:5px}
+.adminrow {
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+@media(max-width:760px) {
+  .hero {grid-template-columns:1fr}
+  .heroimg {height:260px}
+  .navlinks {display:none}
+  .gallery {grid-template-columns:repeat(2,1fr)}
+  .gallery img {height:180px}
+  .prices {grid-template-columns:1fr}
+  .formgrid {grid-template-columns:1fr}
+  .field.full {grid-column:auto}
+  section {padding:48px 0}
+}
 </style>
 </head>
+
 <body>
-<header><div class="wrap">
-<nav><a class="brand" href="#">Mila Caroline<small>Nail Designer · Studio</small></a><div class="navlinks"><a href="#trabalhos">Trabalhos</a><a href="#servicos">Preços</a><a href="#agendar">Agendar</a><a href="#local">Localização</a></div><a class="pill" href="#agendar">Agendar horário</a></nav>
-<div class="hero"><div><span class="eyebrow">Beleza em cada detalhe</span><h1>Suas unhas,<br>do seu jeito.</h1><p>Um momento de cuidado, beleza e autoestima. Conheça alguns trabalhos do Studio Mila Caroline e escolha seu próximo horário.</p><a class="btn" href="#agendar">Quero agendar</a></div><img class="heroimg" id="heroImage" src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=900" alt="Manicure delicada"></div>
-</div></header>
+
+<header>
+<div class="wrap">
+<nav>
+<a class="brand" href="#">
+Mila Caroline
+<small>Nail Designer · Studio</small>
+</a>
+<div class="navlinks">
+<a href="#trabalhos">Trabalhos</a>
+<a href="#servicos">Preços</a>
+<a href="#agendar">Agendar</a>
+<a href="#local">Localização</a>
+</div>
+<a class="pill" href="#agendar">Agendar horário</a>
+</nav>
+
+<div class="hero">
+<div>
+<span class="eyebrow">Beleza em cada detalhe</span>
+<h1>Suas unhas,<br>do seu jeito.</h1>
+<p>Um momento de cuidado, beleza e autoestima. Conheça alguns trabalhos do Studio Mila Caroline e escolha seu próximo horário.</p>
+<a class="btn" href="#agendar">Quero agendar</a>
+</div>
+<img class="heroimg" id="heroImage"
+src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=900"
+alt="Manicure delicada">
+</div>
+</div>
+</header>
+
 <main>
-<section id="trabalhos"><div class="wrap"><div class="heading"><span class="eyebrow">Portfólio</span><h2>Um pouco do meu trabalho</h2><p>Inspirações e resultados feitos com carinho.</p></div><div class="gallery" id="gallery">
-<img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=700" alt="Unhas decoradas"><img src="https://images.unsplash.com/photo-1604902396830-aca29e19b067?w=700" alt="Manicure"><img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=700" alt="Nail art"><img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=700" alt="Unhas delicadas"><img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=700" alt="Alongamento"><img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=700" alt="Esmaltação"></div></div></section>
-<section id="servicos"><div class="wrap"><div class="heading"><span class="eyebrow">Serviços</span><h2>Tabela de preços</h2><p>Valores em reais · escolha seu serviço na hora de agendar.</p></div><div class="prices">
-<div class="pricecard"><h3>Unhas simples</h3><div class="price"><span>Mão</span><b>R$ 30,00</b></div><div class="price"><span>Pé</span><b>R$ 30,00</b></div><div class="price"><span>Mão e pé</span><b>R$ 60,00</b></div><div class="price"><span>Spa dos pés</span><b>R$ 70,00</b></div></div>
-<div class="pricecard"><h3>Alongamentos</h3><div class="price"><span>Postiças</span><b>R$ 45,00</b></div><div class="price"><span>Postiça realista</span><b>R$ 65,00</b></div><div class="price"><span>Banho de gel</span><b>R$ 90,00</b></div><div class="price"><span>Banho de gel encapsulado</span><b>R$ 110,00</b></div><div class="price"><span>Gel natural (fibra)</span><b>R$ 130,00</b></div><div class="price"><span>Encapsulada (fibra)</span><b>R$ 150,00</b></div></div>
-<div class="pricecard"><h3>Manutenção</h3><div class="price"><span>Banho de gel</span><b>R$ 90,00</b></div><div class="price"><span>Banho de gel encapsulado</span><b>R$ 110,00</b></div><div class="price"><span>Gel natural</span><b>R$ 120,00</b></div><div class="price"><span>Encapsulada</span><b>R$ 140,00</b></div><div class="price"><span>Reposição de unha</span><b>R$ 15,00</b></div><div class="price"><span>Remoção de unha</span><b>R$ 30,00</b></div></div></div></div></section>
-<section class="booking" id="agendar"><div class="wrap"><div class="heading"><span class="eyebrow">Sua hora de se cuidar</span><h2>Agende seu horário</h2><p>Atendimento todos os dias, das 08h às 22h. O horário será confirmado pelo WhatsApp.</p></div><div class="bookbox"><form id="bookingForm"><div class="formgrid">
-<div class="field full"><label for="client">Seu nome</label><input id="client" required placeholder="Como podemos te chamar?"></div>
-<div class="field full"><label for="service">Serviço desejado</label><select id="service" required><option value="">Selecione um serviço</option><option>Mão — R$ 30,00</option><option>Pé — R$ 30,00</option><option>Mão e pé — R$ 60,00</option><option>Spa dos pés — R$ 70,00</option><option>Postiças — R$ 45,00</option><option>Postiça realista — R$ 65,00</option><option>Banho de gel — R$ 90,00</option><option>Banho de gel encapsulado — R$ 110,00</option><option>Gel natural (fibra) — R$ 130,00</option><option>Encapsulada (fibra) — R$ 150,00</option><option>Manutenção — consultar valor</option></select></div>
-<div class="field"><label for="day">Dia desejado</label><input id="day" type="date" required></div><div class="field"><label for="hour">Horário desejado</label><select id="hour" required><option value="">Escolha um horário</option></select></div>
-<div class="field full"><label for="extra">Observação (opcional)</label><textarea id="extra" rows="2" placeholder="Conte algum detalhe, se desejar"></textarea></div></div><button class="btn" type="submit">Enviar pedido pelo WhatsApp</button><p class="note">O envio abre uma conversa no WhatsApp. Este formulário não bloqueia horários automaticamente; aguarde a confirmação do estúdio.</p></form></div></div></section>
-<section id="local"><div class="wrap contact"><div class="heading"><span class="eyebrow">Venha nos visitar</span><h2>Onde estamos</h2><p>Studio Mila Caroline · Atendimento com hora marcada</p></div><div class="map"><b>Localização do estúdio</b><p id="addressText">Endereço será informado em breve.</p><a class="btn" id="mapLink" href="https://www.google.com/maps" target="_blank" rel="noopener">Abrir Google Maps</a></div><p>WhatsApp: (98) 98126-5696<br>Instagram: @studio_milacaroline</p><a class="btn" href="https://wa.me/5598981265696" target="_blank" rel="noopener">Conversar pelo WhatsApp</a></div></section>
-<div class="wrap"><div id="admin"><h2>Painel de edição (demonstração)</h2><p class="note">Esta área salva alterações apenas neste navegador. Para um painel seguro, com senha e dados compartilhados entre dispositivos, será necessária uma etapa adicional com banco de dados e autenticação.</p><div class="adminrow"><b>Alterar nome do estúdio</b><br><input id="editName" placeholder="Nome do estúdio"><button class="btn" onclick="saveName()">Salvar nome</button></div><div class="adminrow"><b>Alterar endereço</b><br><input id="editAddress" placeholder="Endereço completo" size="45"><button class="btn" onclick="saveAddress()">Salvar endereço</button></div><div class="adminrow"><b>Alterar foto do banner por URL</b><br><input id="editHero" placeholder="Cole o endereço público da imagem" size="45"><button class="btn" onclick="saveHero()">Salvar foto</button></div></div></div>
-</main><footer>© <span id="year"></span> Studio Mila Caroline · Feito com carinho <a class="adminlink" href="#admin" onclick="toggleAdmin()">Área administrativa</a></footer>
+
+<section id="trabalhos">
+<div class="wrap">
+<div class="heading">
+<span class="eyebrow">Portfólio</span>
+<h2>Um pouco do meu trabalho</h2>
+<p>Inspirações e resultados feitos com carinho.</p>
+</div>
+
+<div class="gallery" id="gallery">
+<img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=700" alt="Unhas decoradas">
+<img src="https://images.unsplash.com/photo-1604902396830-aca29e19b067?w=700" alt="Manicure">
+<img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=700" alt="Nail art">
+<img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=700" alt="Unhas delicadas">
+<img src="https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=700" alt="Alongamento">
+<img src="https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=700" alt="Esmaltação">
+</div>
+</div>
+</section>
+
+<section id="servicos">
+<div class="wrap">
+<div class="heading">
+<span class="eyebrow">Serviços</span>
+<h2>Tabela de preços</h2>
+<p>Valores em reais · escolha seu serviço na hora de agendar.</p>
+</div>
+
+<div class="prices">
+<div class="pricecard">
+<h3>Unhas simples</h3>
+<div class="price"><span>Mão</span><b>R$ 30,00</b></div>
+<div class="price"><span>Pé</span><b>R$ 30,00</b></div>
+<div class="price"><span>Mão e pé</span><b>R$ 60,00</b></div>
+<div class="price"><span>Spa dos pés</span><b>R$ 70,00</b></div>
+</div>
+
+<div class="pricecard">
+<h3>Alongamentos</h3>
+<div class="price"><span>Postiças</span><b>R$ 45,00</b></div>
+<div class="price"><span>Postiça realista</span><b>R$ 65,00</b></div>
+<div class="price"><span>Banho de gel</span><b>R$ 90,00</b></div>
+<div class="price"><span>Banho de gel encapsulado</span><b>R$ 110,00</b></div>
+<div class="price"><span>Gel natural (fibra)</span><b>R$ 130,00</b></div>
+<div class="price"><span>Encapsulada (fibra)</span><b>R$ 150,00</b></div>
+</div>
+
+<div class="pricecard">
+<h3>Manutenção</h3>
+<div class="price"><span>Banho de gel</span><b>R$ 90,00</b></div>
+<div class="price"><span>Banho de gel encapsulado</span><b>R$ 110,00</b></div>
+<div class="price"><span>Gel natural</span><b>R$ 120,00</b></div>
+<div class="price"><span>Encapsulada</span><b>R$ 140,00</b></div>
+<div class="price"><span>Reposição de unha</span><b>R$ 15,00</b></div>
+<div class="price"><span>Remoção de unha</span><b>R$ 30,00</b></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="booking" id="agendar">
+<div class="wrap">
+<div class="heading">
+<span class="eyebrow">Sua hora de se cuidar</span>
+<h2>Agende seu horário</h2>
+<p>Atendimento todos os dias, das 08h às 22h. O horário será confirmado pelo WhatsApp.</p>
+</div>
+
+<div class="bookbox">
+<form id="bookingForm">
+<div class="formgrid">
+
+<div class="field full">
+<label for="client">Seu nome</label>
+<input id="client" required placeholder="Como podemos te chamar?">
+</div>
+
+<div class="field full">
+<label for="service">Serviço desejado</label>
+<select id="service" required>
+<option value="">Selecione um serviço</option>
+<option>Mão — R$ 30,00</option>
+<option>Pé — R$ 30,00</option>
+<option>Mão e pé — R$ 60,00</option>
+<option>Spa dos pés — R$ 70,00</option>
+<option>Postiças — R$ 45,00</option>
+<option>Postiça realista — R$ 65,00</option>
+<option>Banho de gel — R$ 90,00</option>
+<option>Banho de gel encapsulado — R$ 110,00</option>
+<option>Gel natural (fibra) — R$ 130,00</option>
+<option>Encapsulada (fibra) — R$ 150,00</option>
+<option>Manutenção — consultar valor</option>
+</select>
+</div>
+
+<div class="field">
+<label for="day">Dia desejado</label>
+<input id="day" type="date" required>
+</div>
+
+<div class="field">
+<label for="hour">Horário desejado</label>
+<select id="hour" required>
+<option value="">Escolha um horário</option>
+</select>
+</div>
+
+<div class="field full">
+<label for="extra">Observação (opcional)</label>
+<textarea id="extra" rows="2" placeholder="Conte algum detalhe, se desejar"></textarea>
+</div>
+
+</div>
+
+<button class="btn" type="submit">
+Enviar pedido pelo WhatsApp
+</button>
+
+<p class="note">
+O pedido será registrado e enviado para confirmação pelo WhatsApp.
+Os horários só ficam reservados após a confirmação do estúdio.
+</p>
+
+</form>
+</div>
+</div>
+</section>
+
+<section id="local">
+<div class="wrap contact">
+<div class="heading">
+<span class="eyebrow">Venha nos visitar</span>
+<h2>Onde estamos</h2>
+<p>Studio Mila Caroline · Atendimento com hora marcada</p>
+</div>
+
+<div class="map">
+<b>Localização do estúdio</b>
+<p id="addressText">Endereço será informado em breve.</p>
+<a class="btn" id="mapLink"
+href="https://www.google.com/maps"
+target="_blank" rel="noopener">
+Abrir Google Maps
+</a>
+</div>
+
+<p>
+WhatsApp: (98) 98126-5696<br>
+Instagram: @studio_milacaroline
+</p>
+
+<a class="btn" href="https://wa.me/5598981265696"
+target="_blank" rel="noopener">
+Conversar pelo WhatsApp
+</a>
+</div>
+</section>
+
+<div class="wrap">
+<div id="admin">
+<h2>Painel de edição (demonstração)</h2>
+<p class="note">
+Esta área altera informações apenas nesta página.
+O gerenciamento seguro de agendamentos continua no painel administrativo separado.
+</p>
+
+<div class="adminrow">
+<b>Alterar nome do estúdio</b><br>
+<input id="editName" placeholder="Nome do estúdio">
+<button class="btn" onclick="saveName()">Salvar nome</button>
+</div>
+
+<div class="adminrow">
+<b>Alterar endereço</b><br>
+<input id="editAddress" placeholder="Endereço completo" size="45">
+<button class="btn" onclick="saveAddress()">Salvar endereço</button>
+</div>
+
+<div class="adminrow">
+<b>Alterar foto do banner por URL</b><br>
+<input id="editHero" placeholder="Endereço público da imagem" size="45">
+<button class="btn" onclick="saveHero()">Salvar foto</button>
+</div>
+</div>
+</div>
+
+</main>
+
+<footer>
+© <span id="year"></span> Studio Mila Caroline · Feito com carinho
+<a class="adminlink" href="admin.html">Área administrativa</a>
+</footer>
+
 <script>
-const phone='5598981265696';
-const hour=document.getElementById('hour');for(let h=8;h<=22;h++){for(let m of (h===22?[0]:[0,30])){let t=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');let o=document.createElement('option');o.value=t;o.textContent=t;hour.appendChild(o)}}
-const date=document.getElementById('day');let today=new Date();date.min=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10)
-document.getElementById('bookingForm').addEventListener('submit',e=>{e.preventDefault();let msg=`Olá, Mila! Gostaria de solicitar um agendamento.%0A%0ANome: ${encodeURIComponent(document.getElementById('client').value)}%0AServiço: ${encodeURIComponent(document.getElementById('service').value)}%0ADia: ${encodeURIComponent(date.value)}%0AHorário: ${encodeURIComponent(hour.value)}%0AObservação: ${encodeURIComponent(document.getElementById('extra').value)}`;void 0;`});
-function toggleAdmin(){let el=document.getElementById('admin');el.style.display=el.style.display==='block'?'none':'block'}
-function saveName(){let v=document.getElementById('editName').value.trim();if(v){document.querySelector('.brand').childNodes[0].textContent=v+' ';alert('Nome atualizado neste navegador.')}}
-function saveAddress(){let v=document.getElementById('editAddress').value.trim();if(v){document.getElementById('addressText').textContent=v;document.getElementById('mapLink').href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(v);alert('Endereço atualizado nesta página. Para manter publicado, será preciso integrar o painel.')}}
-function saveHero(){let v=document.getElementById('editHero').value.trim();if(v){document.getElementById('heroImage').src=v;alert('Foto atualizada neste navegador.')}}
-document.getElementById('year').textContent=new Date().getFullYear();
+'use strict';
+
+const phone = '5598981265696';
 
 const formulario = document.getElementById('bookingForm');
+const campoData = document.getElementById('day');
+const campoHorario = document.getElementById('hour');
+
+function dataLocalISO(data) {
+  const ano = data.getFullYear();
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const dia = String(data.getDate()).padStart(2, '0');
+  return `${ano}-${mes}-${dia}`;
+}
+
+function atualizarDataMinima() {
+  campoData.min = dataLocalISO(new Date());
+}
+
+function carregarHorarios() {
+  campoHorario.innerHTML = '';
+
+  const inicial = document.createElement('option');
+  inicial.value = '';
+  inicial.textContent = 'Escolha um horário';
+  campoHorario.appendChild(inicial);
+
+  for (let h = 8; h <= 22; h++) {
+    const minutos = h === 22 ? [0] : [0, 30];
+
+    for (const m of minutos) {
+      const horario =
+        String(h).padStart(2, '0') + ':' +
+        String(m).padStart(2, '0');
+
+      const opcao = document.createElement('option');
+      opcao.value = horario;
+      opcao.textContent = horario;
+
+      campoHorario.appendChild(opcao);
+    }
+  }
+}
+
+atualizarDataMinima();
+carregarHorarios();
+
+campoData.addEventListener('change', function() {
+  carregarHorarios();
+});
 
 formulario.addEventListener('submit', async function(event) {
   event.preventDefault();
-  event.stopImmediatePropagation();
+
+  atualizarDataMinima();
 
   const nome = document.getElementById('client').value.trim();
-  const telefone = prompt('Digite seu WhatsApp com DDD:');
+  const telefoneDigitado = prompt('Digite seu WhatsApp com DDD:');
 
-  if (!telefone) return;
+  if (telefoneDigitado === null) return;
 
+  const telefone = telefoneDigitado.replace(/\D/g, '');
   const servico = document.getElementById('service').value;
-  const data = document.getElementById('day').value;
-  const horario = document.getElementById('hour').value;
+  const data = campoData.value;
+  const horario = campoHorario.value;
+  const observacao = document.getElementById('extra').value.trim();
+
+  if (!nome || !servico || !data || !horario) {
+    alert('Preencha nome, serviço, data e horário.');
+    return;
+  }
+
+  if (data < campoData.min) {
+    alert('Escolha uma data de hoje em diante.');
+    return;
+  }
+
+  const horariosValidos = Array.from(campoHorario.options)
+    .map(opcao => opcao.value)
+    .filter(Boolean);
+
+  if (!horariosValidos.includes(horario)) {
+    alert('Escolha um horário válido.');
+    return;
+  }
+
+  if (telefone.length < 10 || telefone.length > 11) {
+    alert('Digite um WhatsApp válido com DDD.');
+    return;
+  }
 
   const botao = formulario.querySelector('button[type="submit"]');
+
   botao.disabled = true;
   botao.textContent = 'Enviando pedido...';
 
   try {
     const resposta = await fetch('/api/agendamentos', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
-        nome, telefone, servico, data, horario
+        nome: nome,
+        telefone: telefone,
+        servico: servico,
+        data: data,
+        horario: horario
       })
     });
 
     if (!resposta.ok) {
-      throw new Error('Não foi possível registrar o pedido.');
+      throw new Error('Falha ao registrar o agendamento.');
     }
 
     const mensagem = `Olá, Mila! Solicitei um agendamento.
+
 Nome: ${nome}
 WhatsApp: ${telefone}
 Serviço: ${servico}
 Data: ${data}
 Horário: ${horario}
+Observação: ${observacao || 'Nenhuma'}
+
 Aguardando confirmação.`;
 
-    window.location.href =
-      'https://wa.me/5598981265696?text=' +
-      encodeURIComponent(mensagem);
+    const linkWhatsApp =
+      'https://wa.me/' + phone +
+      '?text=' + encodeURIComponent(mensagem);
+
+    window.location.href = linkWhatsApp;
 
   } catch (erro) {
+    console.error('Erro no agendamento:', erro);
     alert('Não foi possível registrar o pedido. Tente novamente.');
   } finally {
     botao.disabled = false;
     botao.textContent = 'Enviar pedido pelo WhatsApp';
   }
-}, true);
+});
 
-</script></body></html>
+function toggleAdmin() {
+  const el = document.getElementById('admin');
+  el.style.display = el.style.display === 'block' ? 'none' : 'block';
+}
+
+function saveName() {
+  const v = document.getElementById('editName').value.trim();
+  if (v) {
+    document.querySelector('.brand').childNodes[0].textContent = v + ' ';
+    alert('Nome atualizado nesta página.');
+  }
+}
+
+function saveAddress() {
+  const v = document.getElementById('editAddress').value.trim();
+  if (v) {
+    document.getElementById('addressText').textContent = v;
+    document.getElementById('mapLink').href =
+      'https://www.google.com/maps/search/?api=1&query=' +
+      encodeURIComponent(v);
+    alert('Endereço atualizado nesta página.');
+  }
+}
+
+function saveHero() {
+  const v = document.getElementById('editHero').value.trim();
+  if (v) {
+    document.getElementById('heroImage').src = v;
+    alert('Foto atualizada nesta página.');
+  }
+}
+
+document.getElementById('year').textContent =
+  new Date().getFullYear();
+
+</script>
+</body>
+</html>
+
