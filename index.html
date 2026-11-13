@@ -334,7 +334,54 @@ footer {
     font-size: 10px;
   }
 }
-</style>
+
+/* TÍTULO PRINCIPAL DO STUDIO */
+.hero .titulo-studio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin: 0 0 18px;
+  line-height: 1.1;
+}
+
+.titulo-pequeno {
+  font-family: Georgia, serif;
+  font-size: clamp(27px, 3vw, 40px);
+  font-style: normal;
+  font-weight: bold;
+  color: #72132f;
+}
+
+.titulo-nome {
+  font-family: Georgia, serif;
+  font-size: clamp(42px, 5vw, 70px);
+  font-style: italic;
+  font-weight: bold;
+  color: #cf1265;
+  letter-spacing: -2px;
+}
+
+.titulo-profissao {
+  font-family: Arial, sans-serif;
+  font-size: clamp(19px, 2.5vw, 30px);
+  font-style: normal;
+  font-weight: bold;
+  color: #b58a28;
+  letter-spacing: 2px;
+}
+
+@media (max-width: 760px) {
+  .hero .titulo-studio {
+    align-items: center;
+  }
+
+  .titulo-nome {
+    letter-spacing: -1px;
+  }
+}
+
+  </style>
 </head>
 
 <body>
@@ -358,7 +405,13 @@ Mila Caroline
 <div class="hero">
 <div>
 <span class="eyebrow">Beleza em cada detalhe</span>
-<h1>Suas unhas,<br>do seu jeito.</h1>
+
+<h1 class="titulo-studio">
+  <span class="titulo-pequeno">Studio</span>
+  <span class="titulo-nome">Mila Caroline</span>
+  <span class="titulo-profissao">Nail Designer</span>
+</h1>
+
 <p>Um momento de cuidado, beleza e autoestima. Conheça alguns trabalhos do Studio Mila Caroline e escolha seu próximo horário.</p>
 <a class="btn" href="#agendar">Quero agendar</a>
 </div>
