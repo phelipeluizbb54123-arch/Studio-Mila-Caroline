@@ -26,12 +26,51 @@
   </style>
 </head>
 <body>
-  <div class="painel">
+  
+<div class="painel" id="painelEdicao" style="display:none">
+
     <h1>💅 Studio Mila Caroline</h1>
     <p>⚙️ Gerenciar Site</p>
     <h2>Bem-vinda ao painel de edição!</h2>
     <p>Aqui você poderá gerenciar fotos, preços e informações do estúdio.</p>
     <p>Estamos preparando suas ferramentas de edição.</p>
   </div>
+
+<script type="module">
+  import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+ 
+const response = await fetch("/api/config");
+if (!response.ok) throw new Error("Configuração indisponível");
+
+const config = await response.json();
+const supabase = createClient(config.url, config.publishableKey);
+ 
+const { data: { user }, error } = await supabase.auth.getUser();
+
+if (error || !user) {
+  window.location.replace("/admin.html");
+}
+
+if (user) {
+  const { data: admin, error: adminError } = await supabase
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (adminError || !admin) {
+    await supabase.auth.signOut();
+    window.location.replace("/admin.html");
+  }
+}
+
+if (!adminError && admin) document.getElementById("painelEdicao").style.display = "block";
+
+
+}
+
+</script>
+    
 </body>
 </html>
