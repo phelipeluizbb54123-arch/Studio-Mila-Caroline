@@ -230,6 +230,31 @@ async function loadAppointments() {
       }
     }
 
+    
+if (appointment.status === "cancelled") {
+
+const lixeira = document.createElement("button");
+
+lixeira.textContent = "🗑️ Excluir";
+
+lixeira.onclick = async () => {
+
+if (!confirm("Deseja excluir este agendamento permanentemente?")) return;
+
+const { error: erroExcluir } = await supabase.from("appointments").delete().eq("id", appointment.id).eq("status", "cancelled");
+
+if (erroExcluir) return alert("Erro ao excluir: " + erroExcluir.message);
+
+await loadAppointments();
+
+};
+  
+  
+card.append(lixeira);
+}
+
+
+
     list.append(card);
   }
 }
