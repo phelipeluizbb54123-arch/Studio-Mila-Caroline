@@ -43,6 +43,9 @@
 
 <p id="mensagemFoto"></p>
 
+<h2>💰 Gerenciar preços dos serviços</h2>
+<div id="gerenciarPrecos"></div>
+
 
   </div>
 
@@ -55,6 +58,86 @@ if (!response.ok) throw new Error("Configuração indisponível");
 
 const config = await response.json();
 const supabase = createClient(config.url, config.publishableKey);
+  
+const listaPrecos = document.getElementById("gerenciarPrecos");
+
+async function carregarPrecos() {
+  const { data: servicos, error: erroPrecos } = await supabase
+    .from("servicos_precos")
+    .select("id, nome, preco")
+    .order("id");
+
+  
+if (erroPrecos) {
+  listaPrecos.textContent = "Erro ao carregar os preços: " + erroPrecos.message;
+  return;
+}
+
+  
+listaPrecos.innerHTML = "";
+
+for (const servico of servicos) {
+  const linha = document.createElement("div");
+  linha.style.marginBottom = "12px";
+
+  
+const nome = document.createElement("label");
+nome.textContent = servico.nome + " — R$ ";
+linha.append(nome);
+
+  
+const campoPreco = document.createElement("input");
+campoPreco.type = "number";
+campoPreco.min = "0";
+campoPreco.step = "0.01";
+campoPreco.value = servico.preco ?? "";
+campoPreco.placeholder = "Sob consulta";
+linha.append(campoPreco);
+
+  
+const botaoSalvar = document.createElement("button");
+botaoSalvar.textContent = "💾 Salvar preço";
+botaoSalvar.type = "button";
+
+ 
+botaoSalvar.onclick = async () => {
+  const valor = campoPreco.value.trim();
+  const novoPreco = valor === "" ? null : Number(valor);
+
+  if (valor !== "" && (!Number.isFinite(novoPreco) || novoPreco < 0)) {
+    alert("Digite um preço válido.");
+    return;
+  }
+
+  
+botaoSalvar.disabled = true;
+
+const { error: erroSalvar } = await supabase
+  .from("servicos_precos")
+  .update({ preco: novoPreco })
+  .eq("id", servico.id);
+
+  
+botaoSalvar.disabled = false;
+
+if (erroSalvar) {
+  alert("Erro ao salvar preço: " + erroSalvar.message);
+  return;
+}
+
+alert("✅ Preço salvo com sucesso!");
+
+  
+};
+
+  
+linha.append(botaoSalvar);
+listaPrecos.append(linha);
+
+  
+  }
+}
+
  
 const { data: { user }, error } = await supabase.auth.getUser();
  
@@ -91,6 +174,9 @@ if (user) {
   }
 
 if (!adminError && admin) document.getElementById("painelEdicao").style.display = "block";
+  
+if (!adminError && admin) await carregarPrecos();
+
 }
 </script>    
 </body>
