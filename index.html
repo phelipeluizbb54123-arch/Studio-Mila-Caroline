@@ -534,7 +534,15 @@ alt="Foto original de Mila Caroline">
 </div>
 </section>
 
-<section class="booking" id="agendar">
+
+<section id="galeria-trabalhos">
+<h2>Nossos Trabalhos 💅</h2>
+ 
+<div id="lista-fotos-trabalhos"></div>
+ 
+</section>
+
+  <section class="booking" id="agendar">
 <div class="wrap">
 <div class="heading">
 <span class="eyebrow">Sua hora de se cuidar</span>
@@ -669,6 +677,49 @@ O gerenciamento seguro de agendamentos continua no painel administrativo separad
 
 <script>
 'use strict';
+  
+async function carregarFotosTrabalhos() {
+
+const resposta = await fetch("/api/config");
+ 
+if (!resposta.ok) throw new Error("Erro ao carregar configuração");
+
+  const config = await resposta.json();
+  
+const urlSupabase = config.url;
+ 
+const chavePublica = config.publishableKey;
+  
+const enderecoFotos = urlSupabase + "/storage/v1/object/list/fotos-trabalhos";
+  
+const respostaFotos = await fetch(enderecoFotos, { method: "POST", headers: { "apikey": chavePublica, "Content-Type": "application/json" }, body: JSON.stringify({ prefix: "", limit: 100 }) });
+
+const fotos = await respostaFotos.json();
+
+if (!respostaFotos.ok) throw new Error("Erro ao buscar fotos: " + JSON.stringify(fotos));
+
+const galeria = document.getElementById("lista-fotos-trabalhos");
+
+galeria.innerHTML = "";
+
+for (const foto of fotos) {
+
+const imagem = document.createElement("img");
+
+imagem.src = urlSupabase + "/storage/v1/object/public/fotos-trabalhos/" + encodeURIComponent(foto.name);
+
+imagem.style.cssText = "width:100%;height:250px;object-fit:cover;border-radius:15px;";
+
+galeria.appendChild(imagem);
+
+
+ 
+}
+
+}
+
+carregarFotosTrabalhos().catch(console.error);
+
 
 const phone = '5598981265696';
 
