@@ -498,7 +498,9 @@ Conheça alguns dos meus trabalhos realizados com muito amor e dedicação. 💅
 <p>Valores em reais · escolha seu serviço na hora de agendar.</p>
 </div>
 
-<div class="prices">
+
+<div class="prices" id="tabelaPrecos">
+
 <div class="pricecard">
 <h3>Unhas simples</h3>
 <div class="price"><span>Mão</span><b>R$ 30,00</b></div>
@@ -889,6 +891,61 @@ function saveHero() {
 
 document.getElementById('year').textContent =
   new Date().getFullYear();
+
+
+async function atualizarPrecosSite() {
+  const resposta = await fetch("/api/config");
+  if (!resposta.ok) return;
+
+  const config = await resposta.json();
+  
+const respostaPrecos = await fetch(
+  config.url + "/rest/v1/servicos_precos?select=nome,preco",
+  {
+    headers: {
+      apikey: config.publishableKey
+    }
+  }
+);
+
+if (!respostaPrecos.ok) return;
+
+const servicos = await respostaPrecos.json();
+
+const formatarPreco = (preco) =>
+  preco === null
+    ? "Sob consulta"
+    : Number(preco).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+
+const precosPorNome = new Map(
+  servicos.map(servico => [servico.nome.trim().toLowerCase(), servico.preco])
+);
+
+document.querySelectorAll("#tabelaPrecos .price").forEach(linha => {
+  const nome = linha.querySelector("span")?.textContent.trim().toLowerCase();
+  const valor = linha.querySelector("b");
+
+  if (valor && precosPorNome.has(nome)) {
+    valor.textContent = formatarPreco(precosPorNome.get(nome));
+  }
+});
+
+document.querySelectorAll("#service option").forEach(opcao => {
+  const nome = opcao.textContent.split(" — ")[0].trim().toLowerCase();
+
+  if (precosPorNome.has(nome)) {
+    opcao.textContent = servicos.find(
+      servico => servico.nome.trim().toLowerCase() === nome
+    ).nome + " — " + formatarPreco(precosPorNome.get(nome));
+  }
+});
+
+}
+
+atualizarPrecosSite();
 
 </script>
 </body>
