@@ -749,8 +749,13 @@ function carregarHorarios() {
   inicial.textContent = 'Escolha um horário';
   campoHorario.appendChild(inicial);
 
-  for (let h = 8; h <= 22; h++) {
-    const minutos = h === 22 ? [0] : [0, 30];
+  
+for (let h = 8; h <= 20; h++) {
+  if (h > 10 && h < 13) continue;
+
+    
+const minutos = h === 10 ? [0] : [0, 30];
+
 
     for (const m of minutos) {
       const horario =
