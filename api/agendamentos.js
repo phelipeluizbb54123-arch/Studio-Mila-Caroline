@@ -51,10 +51,13 @@ export default async function handler(req, res) {
     if (
       !Number.isFinite(dia.getTime()) ||
       dia.toISOString().slice(0, 10) !== data ||
-      hora < 8 ||
-      hora > 22 ||
-      ![0, 30].includes(minuto) ||
-      (hora === 22 && minuto !== 0)
+      
+hora < 8 ||
+hora > 20 ||
+(hora > 10 && hora < 13) ||
+(hora === 10 && minuto !== 0) ||
+![0, 30].includes(minuto)
+
     ) {
       return res.status(400).json({
         error: "Data ou horário inválido."
