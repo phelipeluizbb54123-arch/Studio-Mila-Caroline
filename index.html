@@ -381,6 +381,54 @@ footer {
   }
 }
 
+/* Calendário Studio Mila Caroline */
+#calendario-personalizado {
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid #f3c5d7;
+  border-radius: 15px;
+  background: #fff8fb;
+}
+
+.calendario-grade {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.calendario-dia {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 2px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+ 
+.calendario-livre {
+  background: #c8f7d0;
+  color: #176b32;
+}
+
+.calendario-parcial {
+  background: #fff0a8;
+  color: #805500;
+}
+
+.calendario-lotado {
+  background: #ffc4c4;
+  color: #a02020;
+  cursor: not-allowed;
+}
+
+.calendario-selecionado {
+  border: 2px solid #d4af37;
+}
+
   </style>
 </head>
 
@@ -579,6 +627,7 @@ Conheça alguns dos meus trabalhos realizados com muito amor e dedicação. 💅
 <div class="field">
 <label for="day">Dia desejado</label>
 <input id="day" type="date" required>
+  <div id="calendario-personalizado"></div>
 </div>
 
 <div class="field">
@@ -820,8 +869,174 @@ async function carregarHorarios() {
 }
 
 
+const calendario = document.getElementById(
+  'calendario-personalizado'
+);
+
+const TOTAL_HORARIOS = 21;
+
+async function criarGradeCalendario(ano, mes) {
+  calendario.innerHTML = '';
+
+  const titulo = document.createElement('h3');
+  titulo.textContent = new Date(
+    ano, mes, 1
+  ).toLocaleDateString('pt-BR', {
+    month: 'long',
+    year: 'numeric'
+  });
+
+  calendario.appendChild(titulo);
+
+const navegacao = document.createElement('div');
+navegacao.style.display = 'flex';
+navegacao.style.justifyContent = 'space-between';
+navegacao.style.gap = '10px';
+navegacao.style.marginBottom = '12px';
+
+const anterior = document.createElement('button');
+anterior.type = 'button';
+anterior.textContent = '❮ Anterior';
+anterior.disabled =
+  new Date(ano, mes, 1) <=
+  new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+const proximo = document.createElement('button');
+proximo.type = 'button';
+proximo.textContent = 'Próximo ❯';
+
+
+anterior.onclick = function() {
+  const mesAnterior = new Date(ano, mes - 1, 1);
+  const mesAtual = new Date();
+  mesAtual.setDate(1);
+  mesAtual.setHours(0, 0, 0, 0);
+
+  if (mesAnterior < mesAtual) return;
+
+  criarGradeCalendario(
+    mesAnterior.getFullYear(),
+    mesAnterior.getMonth()
+  );
+};
+
+
+proximo.onclick = function() {
+  criarGradeCalendario(ano, mes + 1);
+};
+
+navegacao.appendChild(anterior);
+navegacao.appendChild(proximo);
+calendario.appendChild(navegacao);
+
+  const grade = document.createElement('div');
+  grade.className = 'calendario-grade';
+
+  const diasSemana = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
+
+  for (const dia of diasSemana) {
+    const cabecalho = document.createElement('div');
+    cabecalho.textContent = dia;
+    cabecalho.style.textAlign = 'center';
+    grade.appendChild(cabecalho);
+  }
+
+  const primeiroDia = new Date(ano, mes, 1).getDay();
+  const quantidadeDias = new Date(ano, mes + 1, 0).getDate();
+
+  for (let i = 0; i < primeiroDia; i++) {
+    grade.appendChild(document.createElement('div'));
+  }
+const consultasCalendario = [];
+  for (let dia = 1; dia <= quantidadeDias; dia++) {
+    const botao = document.createElement('button');
+    botao.type = 'button';
+    botao.className = 'calendario-dia';
+    botao.textContent = dia;
+    botao.disabled = true;
+    
+const dataDia =
+  ano + '-' +
+  String(mes + 1).padStart(2, '0') + '-' +
+  String(dia).padStart(2, '0');
+    
+if (dataDia < dataLocalISO(new Date())) {
+  botao.disabled = true;
+  botao.title = 'Data já passou';
+  grade.appendChild(botao);
+  continue;
+}
+const consultaDia = async () => {
+    try {
+  const resposta = await fetch(
+    '/api/agendamentos?data=' + dataDia,
+    { cache: 'no-store' }
+  );
+
+  if (!resposta.ok) {
+    throw new Error('Erro na consulta');
+  }
+
+  const dados = await resposta.json();
+  const ocupados = dados.horariosOcupados || [];
+
+  if (ocupados.length >= TOTAL_HORARIOS) {
+    botao.classList.add('calendario-lotado');
+    botao.disabled = true;
+  } else if (ocupados.length > 0) {
+    botao.classList.add('calendario-parcial');
+    botao.disabled = false;
+  } else {
+    botao.classList.add('calendario-livre');
+    botao.disabled = false;
+  }
+
+} catch (erro) {
+  botao.disabled = true;
+  botao.title = 'Disponibilidade indisponível';
+}
+};
+
+consultasCalendario.push(consultaDia());
+    
+botao.addEventListener('click', function() {
+  if (botao.disabled) return;
+
+  const dataEscolhida =
+    ano + '-' +
+    String(mes + 1).padStart(2, '0') + '-' +
+    String(dia).padStart(2, '0');
+
+  campoData.value = dataEscolhida;
+  campoData.dispatchEvent(
+    new Event('change', { bubbles: true })
+  );
+
+  calendario.querySelectorAll('.calendario-dia')
+    .forEach(item => {
+      item.classList.remove('calendario-selecionado');
+    });
+
+  botao.classList.add('calendario-selecionado');
+});
+
+    grade.appendChild(botao);
+  }
+
+  calendario.appendChild(grade);
+
+  await Promise.allSettled(consultasCalendario);
+}
+
+
 atualizarDataMinima();
 carregarHorarios();
+
+const hojeCalendario = new Date();
+
+criarGradeCalendario(
+  hojeCalendario.getFullYear(),
+  hojeCalendario.getMonth()
+);
 
 campoData.addEventListener('change', function() {
   carregarHorarios();
