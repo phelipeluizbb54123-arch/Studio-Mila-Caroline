@@ -2,10 +2,59 @@
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
-  if (req.method !== "POST") {
+  if (req.method !== "POST" && req.method !== "GET") {
     return res.status(405).json({
       error: "Método não permitido."
     });
+  }
+
+  if (req.method === "GET") {
+    const data = req.query.data;
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(data || "")) {
+      return res.status(400).json({
+        error: "Data inválida."
+      });
+    }
+
+    const url = process.env.SUPABASE_URL;
+    const secret = process.env.SUPABASE_SECRET_KEY;
+
+    if (!url || !secret) {
+      return res.status(503).json({
+        error: "Sistema não configurado."
+      });
+    }
+
+    try {
+      const resposta = await fetch(
+        url + "/rest/v1/appointments?select=appointment_time&appointment_date=eq." +
+        encodeURIComponent(data) +
+        "&status=in.(pending,confirmed)",
+        {
+          headers: {
+            apikey: secret,
+            Authorization: "Bearer " + secret
+          }
+        }
+      );
+
+      if (!resposta.ok) {
+        throw new Error("Falha na consulta.");
+      }
+
+      const registros = await resposta.json();
+
+      return res.status(200).json({
+        horariosOcupados: registros.map(
+          item => item.appointment_time.slice(0, 5)
+        )
+      });
+    } catch (erro) {
+      return res.status(500).json({
+        error: "Erro ao consultar horários."
+      });
+    }
   }
 
   try {
