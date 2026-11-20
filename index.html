@@ -741,35 +741,84 @@ function atualizarDataMinima() {
   campoData.min = dataLocalISO(new Date());
 }
 
-function carregarHorarios() {
+
+async function carregarHorarios() {
+  const dataSelecionada = campoData.value;
+
   campoHorario.innerHTML = '';
 
   const inicial = document.createElement('option');
   inicial.value = '';
-  inicial.textContent = 'Escolha um horário';
+  inicial.textContent = dataSelecionada
+    ? 'Carregando horários...'
+    : 'Escolha uma data primeiro';
+
   campoHorario.appendChild(inicial);
+  campoHorario.disabled = true;
 
-  
-for (let h = 8; h <= 20; h++) {
-  if (h > 10 && h < 13) continue;
+  if (!dataSelecionada) return;
 
-    
-const minutos = h === 10 ? [0] : [0, 30];
+  try {
+    const resposta = await fetch(
+      '/api/agendamentos?data=' +
+      encodeURIComponent(dataSelecionada),
+      { cache: 'no-store' }
+    );
 
-
-    for (const m of minutos) {
-      const horario =
-        String(h).padStart(2, '0') + ':' +
-        String(m).padStart(2, '0');
-
-      const opcao = document.createElement('option');
-      opcao.value = horario;
-      opcao.textContent = horario;
-
-      campoHorario.appendChild(opcao);
+    if (!resposta.ok) {
+      throw new Error('Falha ao consultar horários');
     }
+
+    const dados = await resposta.json();
+    const ocupados = new Set(
+      dados.horariosOcupados || []
+    );
+
+    if (campoData.value !== dataSelecionada) return;
+
+    campoHorario.innerHTML = '';
+    inicial.textContent = 'Escolha um horário';
+    campoHorario.appendChild(inicial);
+
+    let disponiveis = 0;
+
+    for (let h = 8; h <= 20; h++) {
+      if (h > 10 && h < 13) continue;
+
+      const minutos = h === 10 ? [0] : [0, 30];
+
+      for (const m of minutos) {
+        const horario =
+          String(h).padStart(2, '0') + ':' +
+          String(m).padStart(2, '0');
+
+        if (ocupados.has(horario)) continue;
+
+        const opcao = document.createElement('option');
+        opcao.value = horario;
+        opcao.textContent = horario;
+
+        campoHorario.appendChild(opcao);
+        disponiveis++;
+      }
+    }
+
+    if (disponiveis === 0) {
+      inicial.textContent = 'Dia sem horários disponíveis';
+    }
+
+    campoHorario.disabled = disponiveis === 0;
+
+  } catch (erro) {
+    if (campoData.value !== dataSelecionada) return;
+
+    campoHorario.innerHTML = '';
+    inicial.textContent = 'Erro ao carregar horários';
+    campoHorario.appendChild(inicial);
+    campoHorario.disabled = true;
   }
 }
+
 
 atualizarDataMinima();
 carregarHorarios();
